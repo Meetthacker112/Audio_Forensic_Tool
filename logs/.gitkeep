@@ -1,0 +1,2 @@
+# This file ensures the logs directory is preserved in version control
+# Log files will be created here when the application runs

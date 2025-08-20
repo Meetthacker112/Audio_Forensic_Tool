@@ -1,0 +1,57 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Logs
+logs/*.log
+*.log
+
+# Temporary files
+temp/*
+!temp/.gitkeep
+
+# Reports (user generated)
+reports/*.pdf
+reports/*.docx
+!reports/.gitkeep
+
+# Models (downloaded)
+models/*
+!models/.gitkeep
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Audio files (usually large)
+*.wav
+*.mp3
+*.flac
+*.aac
+*.ogg
+*.m4a
+
+# API keys and sensitive config
+config.json
+.env
+
+# Test files
+test_*.py
+*_test.py
