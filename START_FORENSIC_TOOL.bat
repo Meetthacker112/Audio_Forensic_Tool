@@ -16,9 +16,9 @@ cd /d "%~dp0"
 
 REM Activate virtual environment and run application
 if exist ".venv\Scripts\python.exe" (
-    ".venv\Scripts\python.exe" gui.py
+    ".venv\Scripts\python.exe" main.py
 ) else (
-    python gui.py
+    python main.py
 )
 
 if errorlevel 1 (
