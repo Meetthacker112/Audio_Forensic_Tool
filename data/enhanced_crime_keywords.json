@@ -1,0 +1,220 @@
+{
+  "english": {
+    "violence": [
+      "murder", "kill", "killing", "homicide", "assassinate", "eliminate", "execute",
+      "shoot", "shooting", "gunshot", "gunfire", "stab", "stabbing", "knife",
+      "attack", "assault", "battery", "violence", "violent", "brutal", "savage",
+      "beat", "beating", "punch", "hit", "strike", "slap", "kick", "choke",
+      "torture", "tortured", "torturing", "abuse", "abused", "abusing",
+      "blood", "bleed", "bleeding", "wound", "wounded", "injure", "injured",
+      "death", "die", "dying", "dead", "corpse", "body", "cadaver",
+      "suicide", "self-harm", "harm", "hurt", "pain", "suffer", "suffering"
+    ],
+    "weapons": [
+      "weapon", "weapons", "gun", "pistol", "revolver", "rifle", "shotgun",
+      "automatic", "semi-automatic", "machine gun", "assault rifle", "sniper",
+      "knife", "blade", "sword", "dagger", "machete", "cleaver", "razor",
+      "bomb", "bombs", "explosive", "explosives", "dynamite", "grenade",
+      "ammunition", "ammo", "bullet", "bullets", "shell", "shells", "cartridge",
+      "ammunition", "gunpowder", "propellant", "fuse", "detonator",
+      "poison", "toxic", "venom", "chemical weapon", "biological weapon",
+      "nuclear", "radioactive", "contamination", "hazardous", "dangerous"
+    ],
+    "threats": [
+      "threat", "threaten", "threatening", "menace", "menacing", "intimidate",
+      "intimidation", "intimidating", "blackmail", "blackmailing", "extort",
+      "extortion", "extorting", "coerce", "coercion", "coercing", "pressure",
+      "pressuring", "force", "forcing", "compel", "compelling", "warn",
+      "warning", "caution", "cautioning", "alert", "alarming", "scare",
+      "scaring", "frighten", "frightening", "terrorize", "terrorizing",
+      "revenge", "retaliate", "retaliation", "retaliating", "payback",
+      "vengeance", "avenge", "avenging", "punish", "punishing", "punishment"
+    ],
+    "drugs": [
+      "drug", "drugs", "narcotic", "narcotics", "substance", "substances",
+      "cocaine", "coke", "crack", "heroin", "morphine", "opium", "opiate",
+      "marijuana", "cannabis", "weed", "pot", "hash", "hashish", "THC",
+      "methamphetamine", "meth", "crystal", "ice", "speed", "amphetamine",
+      "ecstasy", "MDMA", "LSD", "acid", "mushroom", "mushrooms", "psilocybin",
+      "PCP", "angel dust", "ketamine", "special K", "GHB", "roofie",
+      "dealer", "dealing", "trafficking", "smuggling", "smuggle", "smuggled",
+      "cartel", "syndicate", "mafia", "gang", "crew", "organization",
+      "overdose", "OD", "high", "stoned", "wasted", "addict", "addiction",
+      "addicted", "dependence", "dependent", "withdrawal", "rehab", "rehabilitation"
+    ],
+    "theft": [
+      "steal", "stealing", "stolen", "theft", "thief", "thieves", "rob",
+      "robbery", "robbing", "robbed", "burglar", "burglary", "burgling",
+      "burgled", "loot", "looting", "looted", "heist", "heisting", "heisted",
+      "pickpocket", "pickpocketing", "pickpocketed", "shoplift", "shoplifting",
+      "shoplifted", "embezzle", "embezzlement", "embezzling", "embezzled",
+      "fraud", "fraudulent", "fraudulently", "scam", "scamming", "scammed",
+      "con", "conning", "conned", "cheat", "cheating", "cheated", "swindle",
+      "swindling", "swindled", "defraud", "defrauding", "defrauded",
+      "forgery", "forge", "forging", "forged", "counterfeit", "counterfeiting",
+      "money laundering", "launder", "laundering", "laundered", "wash money"
+    ],
+    "kidnapping": [
+      "kidnap", "kidnapping", "kidnapped", "abduct", "abduction", "abducted",
+      "snatch", "snatching", "snatched", "grab", "grabbing", "grabbed",
+      "capture", "capturing", "captured", "seize", "seizing", "seized",
+      "hostage", "hostages", "ransom", "ransomed", "ransoming",
+      "prisoner", "prisoners", "captive", "captives", "detain", "detaining",
+      "detained", "hold", "holding", "held", "tie up", "tied up", "binding",
+      "bound", "restrain", "restraining", "restrained", "lock up", "locked up",
+      "cage", "caging", "caged", "trap", "trapping", "trapped", "confine",
+      "confining", "confined", "imprison", "imprisoning", "imprisoned"
+    ],
+    "terrorism": [
+      "terror", "terrorism", "terrorist", "terrorists", "terrorize", "terrorizing",
+      "bomb", "bombs", "bombing", "bombed", "explosive", "explosives", "explode",
+      "exploding", "exploded", "explosion", "explosions", "blast", "blasts",
+      "jihad", "jihadi", "jihadist", "radical", "radicalized", "radicalization",
+      "extremist", "extremism", "fundamentalist", "fundamentalism", "militant",
+      "militancy", "insurgent", "insurgency", "rebel", "rebellion", "rebellious",
+      "plot", "plotting", "plotted", "conspiracy", "conspire", "conspiring",
+      "conspired", "scheme", "scheming", "schemed", "plan", "planning", "planned",
+      "attack", "attacking", "attacked", "assault", "assaulting", "assaulted",
+      "target", "targeting", "targeted", "destroy", "destroying", "destroyed",
+      "annihilate", "annihilating", "annihilated", "eliminate", "eliminating",
+      "eliminated", "wipe out", "wiping out", "wiped out", "massacre", "massacring"
+    ],
+    "organized_crime": [
+      "gang", "gangs", "gangster", "gangsters", "mafia", "mob", "mobs",
+      "cartel", "cartels", "syndicate", "syndicates", "organization", "organizations",
+      "boss", "bosses", "leader", "leaders", "head", "heads", "chief", "chiefs",
+      "hitman", "hitmen", "assassin", "assassins", "contract", "contracts",
+      "contractor", "contractors", "mercenary", "mercenaries", "soldier", "soldiers",
+      "territory", "territories", "turf", "turf war", "protection", "protection racket",
+      "racket", "rackets", "racketeeering", "extortion", "extorting", "extorted",
+      "crew", "crews", "family", "families", "clan", "clans", "tribe", "tribes",
+      "network", "networks", "ring", "rings", "operation", "operations",
+      "business", "businesses", "enterprise", "enterprises", "empire", "empires"
+    ],
+    "general_crime": [
+      "crime", "crimes", "criminal", "criminals", "illegal", "illegally",
+      "illicit", "illicitly", "unlawful", "unlawfully", "lawless", "lawlessness",
+      "outlaw", "outlaws", "outlawed", "bandit", "bandits", "banditry",
+      "law", "laws", "legal", "legally", "legitimate", "legitimately",
+      "police", "cop", "cops", "officer", "officers", "detective", "detectives",
+      "arrest", "arresting", "arrested", "jail", "jailed", "prison", "imprisoned",
+      "court", "courts", "judge", "judges", "jury", "juries", "trial", "trials",
+      "lawyer", "lawyers", "attorney", "attorneys", "counsel", "counsels",
+      "evidence", "evidences", "proof", "proofs", "witness", "witnesses",
+      "victim", "victims", "suspect", "suspects", "guilty", "innocent",
+      "charges", "charging", "charged", "sentence", "sentencing", "sentenced",
+      "convict", "convicting", "convicted", "conviction", "convictions",
+      "verdict", "verdicts", "acquit", "acquitting", "acquitted", "acquittal"
+    ]
+  },
+  "hindi": {
+    "violence": [
+      "हत्या", "मारना", "मार डालना", "हत्यारा", "हत्यारे", "मृत्यु", "मरना", "मर जाना",
+      "गोली मारना", "गोलीबारी", "छुरा मारना", "छुरा घोंपना", "हमला", "हमला करना",
+      "मारपीट", "पिटाई", "हिंसा", "हिंसक", "यातना", "तड़पाना", "सताना",
+      "खून", "रक्त", "लहू", "चोट", "घाव", "जख्म", "दर्द", "पीड़ा",
+      "मौत", "मरण", "शव", "लाश", "शरीर", "शव", "आत्महत्या", "खुदकुशी"
+    ],
+    "weapons": [
+      "हथियार", "शस्त्र", "बंदूक", "पिस्तौल", "राइफल", "शॉटगन", "छुरी", "चाकू",
+      "तलवार", "कटार", "ब्लेड", "बम", "विस्फोटक", "गोला", "गोली", "गोलियां",
+      "बारूद", "विस्फोट", "विस्फोट करना", "जहर", "विष", "रासायनिक हथियार",
+      "जैविक हथियार", "परमाणु", "रेडियोधर्मी", "खतरनाक", "हानिकारक"
+    ],
+    "threats": [
+      "धमकी", "धमकाना", "डराना", "भय दिखाना", "ब्लैकमेल", "जबरन वसूली",
+      "दबाव", "जोर", "मजबूर करना", "बाध्य करना", "चेतावनी", "सावधानी",
+      "सतर्कता", "अलर्ट", "डराना", "भयभीत करना", "आतंकित करना",
+      "बदला", "प्रतिशोध", "सजा", "दंड", "सजा देना", "दंड देना"
+    ],
+    "drugs": [
+      "नशा", "ड्रग्स", "नशीला पदार्थ", "अफीम", "गांजा", "भांग", "कोकीन",
+      "हेरोइन", "मॉर्फिन", "एक्सटेसी", "एलएसडी", "मेथ", "क्रिस्टल",
+      "तस्कर", "तस्करी", "तस्करी करना", "माफिया", "गैंग", "संगठन",
+      "ओवरडोज", "नशेबाज़", "लत", "आदत", "निर्भरता", "रिहैब"
+    ],
+    "theft": [
+      "चोरी", "चोरी करना", "चोर", "डकैती", "लूट", "लूटना", "लुटेरा",
+      "घरफोड़", "घरफोड़ी", "पिकपॉकेट", "दुकान से चोरी", "धोखाधड़ी",
+      "ठगी", "जालसाजी", "कन", "धोखा", "छल", "जाल", "जालसाजी",
+      "नकली", "जाली", "मनी लॉन्ड्रिंग", "पैसा धोना"
+    ],
+    "kidnapping": [
+      "अपहरण", "अपहरण करना", "किडनैप", "अगवा करना", "बंधक", "फिरौती",
+      "कैदी", "बंदी", "बांधना", "बंधन", "रोकना", "रोक", "कैद करना",
+      "पिंजरे में बंद करना", "फंसाना", "सीमित करना", "कैद करना"
+    ],
+    "terrorism": [
+      "आतंकवाद", "आतंकवादी", "आतंक", "बम", "विस्फोट", "विस्फोटक",
+      "जिहाद", "जिहादी", "कट्टरपंथी", "अतिवादी", "उग्रवादी", "विद्रोही",
+      "षड्यंत्र", "साजिश", "योजना", "हमला", "लक्ष्य", "नष्ट करना",
+      "नरसंहार", "तबाही", "विनाश"
+    ],
+    "organized_crime": [
+      "संगठित अपराध", "गैंग", "माफिया", "कार्टेल", "सिंडिकेट", "संगठन",
+      "बॉस", "नेता", "सरदार", "हिटमैन", "कॉन्ट्रैक्ट", "क्षेत्र", "रक्षा",
+      "रैकेट", "जबरन वसूली", "क्रू", "परिवार", "नेटवर्क", "ऑपरेशन"
+    ],
+    "general_crime": [
+      "अपराध", "अपराधी", "गैरकानूनी", "अवैध", "अनैतिक", "कानून",
+      "पुलिस", "कॉप", "अधिकारी", "जासूस", "गिरफ्तार", "जेल", "कोर्ट",
+      "न्यायाधीश", "वकील", "सबूत", "गवाह", "पीड़ित", "संदिग्ध",
+      "दोषी", "निर्दोष", "आरोप", "सजा", "फैसला", "बरी"
+    ]
+  },
+  "gujarati": {
+    "violence": [
+      "હત્યા", "મારવું", "મારી નાખવું", "હત્યારો", "હત્યારા", "મૃત્યુ", "મરવું", "મરી જવું",
+      "ગોળી મારવી", "ગોળીબાર", "છરી મારવી", "છરી ઘોંચવી", "હુમલો", "હુમલો કરવો",
+      "મારામારી", "પીટાઈ", "હિંસા", "હિંસક", "યાતના", "તડપાવવું", "સતાવવું",
+      "લોહી", "રક્ત", "ઈજા", "ઘા", "જખમ", "દર્દ", "પીડા",
+      "મૃત્યુ", "શબ", "લાશ", "શરીર", "આત્મહત્યા", "ખુદકુશી"
+    ],
+    "weapons": [
+      "હથિયાર", "શસ્ત્ર", "બંદૂક", "પિસ્તોલ", "રાઈફલ", "શોટગન", "છરી", "ચાકુ",
+      "તલવાર", "કટાર", "બ્લેડ", "બોમ્બ", "વિસ્ફોટક", "ગોળો", "ગોળી", "ગોળીઓ",
+      "બારૂદ", "વિસ્ફોટ", "વિસ્ફોટ કરવો", "ઝેર", "વિષ", "રાસાયણિક હથિયાર",
+      "જૈવિક હથિયાર", "પરમાણુ", "રેડિયોધર્મી", "ખતરનાક", "હાનિકારક"
+    ],
+    "threats": [
+      "ધમકી", "ધમકાવવું", "ડરાવવું", "ભય દર્શાવવું", "બ્લેકમેલ", "જબરદસ્તી વસૂલાત",
+      "દબાવ", "જોર", "મજબૂર કરવું", "બાધ્ય કરવું", "ચેતવણી", "સાવધાની",
+      "સતર્કતા", "અલર્ટ", "ડરાવવું", "ભયભીત કરવું", "આતંકિત કરવું",
+      "બદલો", "પ્રતિશોધ", "સજા", "દંડ", "સજા આપવી", "દંડ આપવો"
+    ],
+    "drugs": [
+      "નશો", "ડ્રગ્સ", "નશીલો પદાર્થ", "અફીણ", "ગાંજો", "ભાંગ", "કોકેઈન",
+      "હેરોઈન", "મોર્ફિન", "એક્સટેસી", "એલએસડી", "મેથ", "ક્રિસ્ટલ",
+      "તસ્કર", "તસ્કરી", "તસ્કરી કરવી", "માફિયા", "ગેંગ", "સંગઠન",
+      "ઓવરડોઝ", "નશેડી", "લત", "આદત", "નિર્ભરતા", "રિહેબ"
+    ],
+    "theft": [
+      "ચોરી", "ચોરી કરવી", "ચોર", "ડકૈતી", "લૂંટ", "લૂંટવું", "લૂંટારો",
+      "ઘરફોડ", "ઘરફોડી", "પિકપોકેટ", "દુકાનથી ચોરી", "છેતરપિંડી",
+      "ઠગાઈ", "જાલસાજી", "કન", "છેતર", "છલ", "જાલ", "જાલસાજી",
+      "નકલી", "જાલી", "મની લોન્ડ્રિંગ", "પૈસા ધોવા"
+    ],
+    "kidnapping": [
+      "અપહરણ", "અપહરણ કરવું", "કિડનેપ", "અગવા કરવું", "બંધક", "ખંડણી",
+      "કેદી", "બંદી", "બાંધવું", "બંધન", "રોકવું", "રોક", "કેદ કરવું",
+      "પિંજરામાં બંધ કરવું", "ફસાવવું", "સીમિત કરવું", "કેદ કરવું"
+    ],
+    "terrorism": [
+      "આતંકવાદ", "આતંકવાદી", "આતંક", "બોમ્બ", "વિસ્ફોટ", "વિસ્ફોટક",
+      "જિહાદ", "જિહાદી", "કટ્ટરપંથી", "અતિવાદી", "ઉગ્રવાદી", "વિદ્રોહી",
+      "ષડયંત્ર", "સાજિશ", "યોજના", "હુમલો", "લક્ષ્ય", "નષ્ટ કરવું",
+      "નરસંહાર", "તબાહી", "વિનાશ"
+    ],
+    "organized_crime": [
+      "સંગઠિત ગુનો", "ગેંગ", "માફિયા", "કાર્ટેલ", "સિન્ડિકેટ", "સંગઠન",
+      "બોસ", "નેતા", "સરદાર", "હિટમેન", "કોન્ટ્રેક્ટ", "ક્ષેત્ર", "રક્ષા",
+      "રેકેટ", "જબરદસ્તી વસૂલાત", "ક્રૂ", "પરિવાર", "નેટવર્ક", "ઓપરેશન"
+    ],
+    "general_crime": [
+      "ગુનો", "ગુનેગાર", "ગેરકાયદેસર", "અવૈધ", "અનૈતિક", "કાયદો",
+      "પોલીસ", "કોપ", "અધિકારી", "જાસૂસ", "ધરપકડ", "જેલ", "કોર્ટ",
+      "ન્યાયાધીશ", "વકીલ", "સાબિત", "સાક્ષી", "પીડિત", "સંદિગ્ધ",
+      "દોષી", "નિર્દોષ", "આરોપ", "સજા", "ફેંસલો", "બરી"
+    ]
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "english": {
+    "direct_threats": true,
+    "implicit_violence": true,
+    "planning_language": true,
+    "slang_indicators": true,
+    "urban_terminology": true,
+    "respect_hierarchy": false,
+    "formality_impact": 0.1,
+    "colloquial_boost": 0.15,
+    "context_indicators": [
+      "going to", "will", "gonna", "plan to", "planning to",
+      "meet at", "come to", "bring", "get", "take",
+      "tonight", "tomorrow", "next week", "this evening"
+    ],
+    "severity_modifiers": {
+      "first_person_planning": 1.2,
+      "second_person_threats": 1.3,
+      "weapon_mentions": 1.4,
+      "temporal_specificity": 1.2,
+      "location_specificity": 1.1
+    }
+  },
+  "hindi": {
+    "direct_threats": true,
+    "implicit_violence": true,
+    "planning_language": true,
+    "slang_indicators": true,
+    "urban_terminology": true,
+    "respect_hierarchy": true,
+    "formality_impact": 0.2,
+    "colloquial_boost": 0.20,
+    "context_indicators": [
+      "जाना", "करना", "होगा", "योजना", "प्लान",
+      "मिलना", "आना", "लाना", "लेकर आना",
+      "रात", "कल", "अगले सप्ताह", "आज शाम"
+    ],
+    "severity_modifiers": {
+      "first_person_planning": 1.3,
+      "second_person_threats": 1.4,
+      "weapon_mentions": 1.5,
+      "temporal_specificity": 1.3,
+      "location_specificity": 1.2,
+      "hierarchical_language": 1.1
+    },
+    "hierarchical_indicators": [
+      "आप", "तुम", "तू", "साहब", "जी", "भाई", "दोस्त"
+    ],
+    "formality_levels": {
+      "very_formal": 0.8,
+      "formal": 1.0,
+      "informal": 1.2,
+      "colloquial": 1.4,
+      "slang": 1.6
+    }
+  },
+  "gujarati": {
+    "direct_threats": true,
+    "implicit_violence": true,
+    "planning_language": true,
+    "slang_indicators": true,
+    "urban_terminology": true,
+    "respect_hierarchy": true,
+    "formality_impact": 0.2,
+    "colloquial_boost": 0.20,
+    "context_indicators": [
+      "જવાનું", "કરવું", "થશે", "યોજના", "પ્લાન",
+      "મળવું", "આવવું", "લાવવું", "લઈને આવવું",
+      "રાત્રે", "કાલે", "આગામી સપ્તાહ", "આજે સાંજે"
+    ],
+    "severity_modifiers": {
+      "first_person_planning": 1.3,
+      "second_person_threats": 1.4,
+      "weapon_mentions": 1.5,
+      "temporal_specificity": 1.3,
+      "location_specificity": 1.2,
+      "hierarchical_language": 1.1
+    },
+    "hierarchical_indicators": [
+      "તમે", "તું", "સાહેબ", "જી", "ભાઈ", "દોસ્ત"
+    ],
+    "formality_levels": {
+      "very_formal": 0.8,
+      "formal": 1.0,
+      "informal": 1.2,
+      "colloquial": 1.4,
+      "slang": 1.6
+    }
+  },
+  "cross_cultural_rules": {
+    "universal_indicators": [
+      "violence", "weapons", "threats", "planning", "temporal", "location"
+    ],
+    "severity_escalation": {
+      "multiple_languages": 1.1,
+      "cross_reference": 1.2,
+      "consistency_check": 1.15
+    },
+    "context_validation": {
+      "cultural_appropriateness": 0.9,
+      "linguistic_consistency": 1.1,
+      "contextual_coherence": 1.05
+    }
+  },
+  "detection_guidelines": {
+    "english": {
+      "high_confidence_threshold": 0.8,
+      "medium_confidence_threshold": 0.6,
+      "low_confidence_threshold": 0.4,
+      "false_positive_risk": "medium",
+      "cultural_sensitivity": "low"
+    },
+    "hindi": {
+      "high_confidence_threshold": 0.85,
+      "medium_confidence_threshold": 0.65,
+      "low_confidence_threshold": 0.45,
+      "false_positive_risk": "high",
+      "cultural_sensitivity": "high"
+    },
+    "gujarati": {
+      "high_confidence_threshold": 0.85,
+      "medium_confidence_threshold": 0.65,
+      "low_confidence_threshold": 0.45,
+      "false_positive_risk": "high",
+      "cultural_sensitivity": "high"
+    }
+  },
+  "mitigation_strategies": {
+    "false_positive_reduction": {
+      "context_analysis": true,
+      "cultural_validation": true,
+      "linguistic_verification": true,
+      "confidence_thresholds": true
+    },
+    "false_negative_prevention": {
+      "pattern_matching": true,
+      "semantic_analysis": true,
+      "contextual_indicators": true,
+      "cross_validation": true
+    }
+  }
+}
