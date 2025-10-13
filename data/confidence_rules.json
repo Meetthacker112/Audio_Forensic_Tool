@@ -1,0 +1,114 @@
+{
+  "keyword_weights": {
+    "violence": 0.95,
+    "weapons": 0.90,
+    "terrorism": 0.95,
+    "threats": 0.85,
+    "kidnapping": 0.90,
+    "drugs": 0.75,
+    "theft": 0.70,
+    "fraud": 0.65,
+    "organized_crime": 0.80,
+    "general_crime": 0.50
+  },
+  "context_weights": {
+    "planning": 0.35,
+    "temporal": 0.25,
+    "location": 0.20,
+    "imperative": 0.30,
+    "question": 0.15,
+    "conditional": 0.20,
+    "future_tense": 0.25,
+    "first_person": 0.20,
+    "second_person": 0.15
+  },
+  "method_weights": {
+    "keywords": 0.60,
+    "openai": 0.85,
+    "huggingface": 0.70,
+    "pattern": 0.55,
+    "context": 0.40
+  },
+  "severity_thresholds": {
+    "CRITICAL": 0.90,
+    "HIGH": 0.75,
+    "MEDIUM": 0.60,
+    "LOW": 0.40,
+    "INFO": 0.20
+  },
+  "confidence_boosters": {
+    "multiple_categories": 0.15,
+    "planning_language": 0.20,
+    "temporal_specificity": 0.15,
+    "location_specificity": 0.10,
+    "first_person_planning": 0.25,
+    "threat_escalation": 0.20,
+    "weapon_mentions": 0.15,
+    "violence_escalation": 0.20
+  },
+  "confidence_reducers": {
+    "question_form": -0.10,
+    "past_tense": -0.15,
+    "hypothetical": -0.20,
+    "metaphorical": -0.25,
+    "literary_context": -0.30,
+    "educational_context": -0.20,
+    "news_context": -0.15,
+    "fictional_context": -0.35
+  },
+  "language_specific_rules": {
+    "english": {
+      "direct_threats": 0.20,
+      "slang_violence": 0.15,
+      "urban_terminology": 0.10
+    },
+    "hindi": {
+      "respect_hierarchy": 0.10,
+      "formal_violence": 0.15,
+      "colloquial_threats": 0.20
+    },
+    "gujarati": {
+      "respect_hierarchy": 0.10,
+      "formal_violence": 0.15,
+      "colloquial_threats": 0.20
+    }
+  },
+  "pattern_weights": {
+    "planning_patterns": 0.30,
+    "threat_patterns": 0.25,
+    "location_patterns": 0.20,
+    "temporal_patterns": 0.25,
+    "money_patterns": 0.15,
+    "weapon_patterns": 0.35,
+    "violence_patterns": 0.40
+  },
+  "context_indicators": {
+    "high_confidence": {
+      "min_planning_indicators": 2,
+      "min_temporal_indicators": 1,
+      "min_location_indicators": 1,
+      "min_weapon_mentions": 1
+    },
+    "medium_confidence": {
+      "min_planning_indicators": 1,
+      "min_temporal_indicators": 1,
+      "min_location_indicators": 0,
+      "min_weapon_mentions": 0
+    },
+    "low_confidence": {
+      "min_planning_indicators": 0,
+      "min_temporal_indicators": 0,
+      "min_location_indicators": 0,
+      "min_weapon_mentions": 0
+    }
+  },
+  "explanation_templates": {
+    "high_confidence": "High confidence due to multiple converging indicators including {factors}",
+    "medium_confidence": "Moderate confidence with some uncertainty factors: {factors}",
+    "low_confidence": "Lower confidence due to limited or ambiguous indicators: {factors}",
+    "critical_severity": "CRITICAL severity due to explicit violence and planning indicators",
+    "high_severity": "HIGH severity due to multiple threat indicators",
+    "medium_severity": "MEDIUM severity with some concerning elements",
+    "low_severity": "LOW severity with minimal threat indicators"
+  }
+}

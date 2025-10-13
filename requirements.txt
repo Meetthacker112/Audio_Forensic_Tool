@@ -1,3 +1,4 @@
+# Core GUI and Audio Processing
 PyQt6>=6.6.0
 pyqtgraph>=0.13.3
 librosa>=0.10.1
@@ -8,19 +9,45 @@ scipy>=1.10.1
 speechrecognition>=3.10.0
 pydub>=0.25.1
 pyaudio>=0.2.11
+
+# AI and ML Libraries
 openai>=1.3.0
-nltk>=3.8.1
-python-dotenv>=1.0.0
 transformers>=4.35.0
 torch>=2.1.0
 scikit-learn>=1.3.0
-reportlab>=4.0.4
-python-docx>=0.8.11
-seaborn>=0.12.2
-langdetect>=1.0.9
-pyannote.audio>=3.1.1
-whisper-timestamped>=1.14.2
+sentence-transformers>=2.2.2
+
+# NLP and Text Processing
+nltk>=3.8.1
 spacy>=3.7.2
 textblob>=0.17.1
+langdetect>=1.0.9
+googletrans==4.0.0rc1
+
+# Data Processing and Analytics
+pandas>=2.0.0
+plotly>=5.15.0
+seaborn>=0.12.2
+
+# Web Framework and API
+fastapi>=0.104.0
+uvicorn>=0.24.0
+streamlit>=1.28.0
+
+# Data Validation and Serialization
+pydantic>=2.0.0
+dataclasses-json>=0.6.0
+
+# Utilities
+python-dotenv>=1.0.0
+structlog>=23.0.0
+
+# Report Generation
+reportlab>=4.0.4
+python-docx>=0.8.11
+
+# Audio Analysis
+pyannote.audio>=3.1.1
+whisper-timestamped>=1.14.2
 webrtcvad>=2.0.10
 praat-parselmouth>=0.4.3
