@@ -3,20 +3,26 @@ Text Detection Module
 
 Provides:
 - Accurate sentence boundary detection (spaCy if available, NLTK/regex fallback)
-- Suspicious/Crime-related word detection using a configurable JSON keyword list
+- Dual-layer suspicious/crime detection:
+  - Layer 1: Keyword-based using configurable JSON list
+  - Layer 2: AI-based (OpenAI) semantic analysis when no keyword match
 
 Design goals:
 - Modular, reusable, importable anywhere in the repo
 - Extends existing pipeline without overwriting; can be used alongside existing modules
 - Python 3.10+, PEP8 compliant, documented
+- Async OpenAI integration toggled via env (USE_OPENAI, OPENAI_MODEL)
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
+import asyncio
 import json
+import logging
+import os
 import re
 
 # Optional imports; fallbacks are handled gracefully
@@ -38,6 +44,19 @@ try:
     from langdetect import detect  # lightweight language detection
 except Exception:  # pragma: no cover
     detect = None  # type: ignore
+
+# Load .env if available
+try:  # pragma: no cover
+    from dotenv import load_dotenv  # type: ignore
+    load_dotenv()
+except Exception:
+    pass
+
+# OpenAI SDK (async) is optional
+try:  # pragma: no cover - optional dependency
+    from openai import AsyncOpenAI as _AsyncOpenAI  # type: ignore
+except Exception:  # pragma: no cover
+    _AsyncOpenAI = None  # type: ignore
 
 
 _DEFAULT_ABBREVIATIONS_EN = {
@@ -167,6 +186,15 @@ class FlaggedSentence:
     flags: List[str]
 
 
+@dataclass(frozen=True)
+class DetectionResult:
+    """JSON-like result for hybrid suspicious detection."""
+    sentence: str
+    detected_by: str  # "keywords" | "openai"
+    confidence: float
+    flags: List[str]
+
+
 class SuspiciousDetector:
     """Detect sentences containing suspicious/crime-related terms.
 
@@ -260,9 +288,92 @@ class SuspiciousDetector:
         return results
 
 
+class OpenAIAnalyzer:
+    """Async OpenAI-based semantic analyzer for suspicious content.
+
+    Controlled by environment variables:
+    - USE_OPENAI: "true"/"1" to enable
+    - OPENAI_MODEL: model id (default: "gpt-4o-mini")
+    - OPENAI_API_KEY: loaded via environment or .env
+    """
+
+    def __init__(self) -> None:
+        self.logger = logging.getLogger(__name__)
+        self.enabled = self._parse_bool(os.getenv("USE_OPENAI", "false"))
+        self.model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+        self._client = None
+        if self.enabled and _AsyncOpenAI is not None and os.getenv("OPENAI_API_KEY"):
+            try:
+                self._client = _AsyncOpenAI()
+            except Exception as exc:  # pragma: no cover
+                self.logger.warning("OpenAI client init failed: %s", exc)
+                self._client = None
+        elif self.enabled and _AsyncOpenAI is None:
+            self.logger.warning("OpenAI SDK not available; disabling USE_OPENAI")
+            self.enabled = False
+
+    @staticmethod
+    def _parse_bool(value: str) -> bool:
+        return value.strip().lower() in {"1", "true", "yes", "on"}
+
+    async def analyze_sentence(self, sentence: str, language: Optional[str] = None) -> Optional[DetectionResult]:
+        if not self.enabled or self._client is None:
+            return None
+        content = self._build_prompt(sentence, language)
+        try:
+            # Use Chat Completions with JSON response
+            resp = await self._client.chat.completions.create(
+                model=self.model,
+                temperature=0,
+                response_format={"type": "json_object"},
+                messages=[
+                    {
+                        "role": "system",
+                        "content": (
+                            "You are a forensic text analyst. Given a single sentence, "
+                            "decide if it implies criminal, illegal, or suspicious activity. "
+                            "Return ONLY a compact JSON object with keys: "
+                            "is_suspicious (boolean), confidence (0..1), flags (array of short labels)."
+                        ),
+                    },
+                    {"role": "user", "content": content},
+                ],
+            )
+            raw = resp.choices[0].message.content if resp.choices else "{}"
+            data = json.loads(raw or "{}")
+            is_suspicious = bool(data.get("is_suspicious", False))
+            if not is_suspicious:
+                return None
+            confidence = float(data.get("confidence", 0.85))
+            flags = data.get("flags") or []
+            if not isinstance(flags, list):
+                flags = [str(flags)]
+            flags = [str(x) for x in flags]
+            return DetectionResult(
+                sentence=sentence,
+                detected_by="openai",
+                confidence=max(0.0, min(1.0, confidence)),
+                flags=flags,
+            )
+        except Exception as exc:  # pragma: no cover
+            self.logger.error("OpenAI analysis failed: %s", exc)
+            return None
+
+    @staticmethod
+    def _build_prompt(sentence: str, language: Optional[str]) -> str:
+        lang = language or _detect_language(sentence)
+        return (
+            "Analyze this sentence for criminal/illegal/suspicious meaning. "
+            "If suspicious, identify 1-3 concise flags. "
+            f"Language hint: {lang}.\n"
+            f"Sentence: {sentence}"
+        )
+
+
 # Convenience functional API
 _segmenter_singleton = SentenceSegmenter()
 _detector_singleton = SuspiciousDetector()
+_openai_singleton = OpenAIAnalyzer()
 
 
 def segment_sentences(text: str, language: Optional[str] = None) -> List[str]:
@@ -278,10 +389,71 @@ def detect_suspicious_sentences(text: str, language: Optional[str] = None) -> Li
     return _detector_singleton.analyze_text(text, language=language)
 
 
+async def analyze_text_hybrid(text: str, language: Optional[str] = None) -> List[DetectionResult]:
+    """Hybrid detection: keyword-first, then async OpenAI for no-match sentences.
+
+    Returns a list of JSON-like results with fields: sentence, detected_by,
+    confidence, flags.
+    """
+    logger = logging.getLogger(__name__)
+    if not text or not text.strip():
+        return []
+
+    # First layer: keywords
+    segmenter = _segmenter_singleton
+    detector = _detector_singleton
+    sentences = segmenter.segment(text, language=language)
+    results: List[DetectionResult] = []
+    no_match_sentences: List[str] = []
+    lang = language or _detect_language(text)
+
+    for sent in sentences:
+        flags = detector.find_flags_in_sentence(sent, language=lang)
+        if flags:
+            results.append(
+                DetectionResult(
+                    sentence=sent, detected_by="keywords", confidence=0.9, flags=flags
+                )
+            )
+        else:
+            no_match_sentences.append(sent)
+
+    # Second layer: OpenAI for sentences without keyword flags
+    if _openai_singleton.enabled and no_match_sentences:
+        tasks = [
+            _openai_singleton.analyze_sentence(sent, language=lang) for sent in no_match_sentences
+        ]
+        try:
+            openai_results = await asyncio.gather(*tasks, return_exceptions=True)
+            for res in openai_results:
+                if isinstance(res, Exception):  # pragma: no cover
+                    logger.error("OpenAI task error: %s", res)
+                    continue
+                if res is not None:
+                    results.append(res)
+        except Exception as exc:  # pragma: no cover
+            logger.error("OpenAI batch analysis failed: %s", exc)
+
+    return results
+
+
+def analyze_text_hybrid_sync(text: str, language: Optional[str] = None) -> List[DetectionResult]:
+    """Synchronous wrapper for analyze_text_hybrid for simple scripts/tests."""
+    try:
+        return asyncio.run(analyze_text_hybrid(text, language=language))
+    except RuntimeError:
+        # Fallback when an event loop is already running
+        loop = asyncio.get_event_loop()
+        return loop.run_until_complete(analyze_text_hybrid(text, language=language))
+
+
 __all__ = [
     "SentenceSegmenter",
     "SuspiciousDetector",
     "FlaggedSentence",
+    "DetectionResult",
     "segment_sentences",
     "detect_suspicious_sentences",
+    "analyze_text_hybrid",
+    "analyze_text_hybrid_sync",
 ]
