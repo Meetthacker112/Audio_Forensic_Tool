@@ -114,6 +114,10 @@ class PersonManager:
             if person['id'] == person_id:
                 allowed_fields = ['name', 'role', 'description', 'notes', 'contact', 'case_ids']
                 
+                # Store original values in case we need to revert
+                original_values = {field: self.persons[i].get(field) for field in allowed_fields}
+                original_updated_at = self.persons[i].get('updated_at')
+                
                 for field, value in kwargs.items():
                     if field in allowed_fields:
                         self.persons[i][field] = value
@@ -123,7 +127,13 @@ class PersonManager:
                 if self.save_persons():
                     self.logger.info(f"Updated person: {person_id}")
                     return self.persons[i]
-                break
+                else:
+                    # Revert changes if save failed
+                    for field, value in original_values.items():
+                        self.persons[i][field] = value
+                    self.persons[i]['updated_at'] = original_updated_at
+                    self.logger.error(f"Failed to save updated person: {person_id}")
+                    return None
         
         self.logger.warning(f"Person not found: {person_id}")
         return None
