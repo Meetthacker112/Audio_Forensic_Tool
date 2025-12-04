@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import (
     QTabWidget, QScrollArea, QSplitter, QGroupBox, QListWidget,
     QComboBox, QSpinBox, QCheckBox, QSlider, QFrame, QMessageBox,
     QStatusBar, QMenuBar, QToolBar, QApplication, QDialog, QDialogButtonBox,
-    QListWidgetItem
+    QListWidgetItem, QLineEdit
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer, QSize, QMutex, QWaitCondition
 from PyQt6.QtGui import QFont, QPixmap, QIcon, QAction, QPalette, QColor, QTextCharFormat, QTextCursor
@@ -47,8 +47,7 @@ class PersonDialog(QDialog):
         # Name
         name_layout = QHBoxLayout()
         name_layout.addWidget(QLabel("Name:"))
-        self.name_edit = QTextEdit()
-        self.name_edit.setMaximumHeight(30)
+        self.name_edit = QLineEdit()
         self.name_edit.setPlaceholderText("Enter person's name")
         name_layout.addWidget(self.name_edit)
         layout.addLayout(name_layout)
@@ -74,8 +73,7 @@ class PersonDialog(QDialog):
         # Contact
         contact_layout = QHBoxLayout()
         contact_layout.addWidget(QLabel("Contact:"))
-        self.contact_edit = QTextEdit()
-        self.contact_edit.setMaximumHeight(30)
+        self.contact_edit = QLineEdit()
         self.contact_edit.setPlaceholderText("Contact information (optional)")
         contact_layout.addWidget(self.contact_edit)
         layout.addLayout(contact_layout)
@@ -99,7 +97,7 @@ class PersonDialog(QDialog):
     def load_person_data(self):
         """Load existing person data into form fields"""
         if self.person:
-            self.name_edit.setPlainText(self.person.get('name', ''))
+            self.name_edit.setText(self.person.get('name', ''))
             
             role = self.person.get('role', 'Other')
             index = self.role_combo.findText(role)
@@ -107,16 +105,16 @@ class PersonDialog(QDialog):
                 self.role_combo.setCurrentIndex(index)
             
             self.description_edit.setPlainText(self.person.get('description', ''))
-            self.contact_edit.setPlainText(self.person.get('contact', ''))
+            self.contact_edit.setText(self.person.get('contact', ''))
             self.notes_edit.setPlainText(self.person.get('notes', ''))
     
     def get_person_data(self) -> dict:
         """Get the person data from form fields"""
         return {
-            'name': self.name_edit.toPlainText().strip(),
+            'name': self.name_edit.text().strip(),
             'role': self.role_combo.currentText(),
             'description': self.description_edit.toPlainText().strip(),
-            'contact': self.contact_edit.toPlainText().strip(),
+            'contact': self.contact_edit.text().strip(),
             'notes': self.notes_edit.toPlainText().strip()
         }
 
@@ -139,8 +137,7 @@ class PersonManagementDialog(QDialog):
         # Header with search
         header_layout = QHBoxLayout()
         
-        self.search_edit = QTextEdit()
-        self.search_edit.setMaximumHeight(30)
+        self.search_edit = QLineEdit()
         self.search_edit.setPlaceholderText("Search persons...")
         self.search_edit.textChanged.connect(self.on_search_changed)
         header_layout.addWidget(self.search_edit, 3)
@@ -214,7 +211,7 @@ class PersonManagementDialog(QDialog):
         """Refresh the person list display"""
         self.person_list.clear()
         
-        search_query = self.search_edit.toPlainText().strip()
+        search_query = self.search_edit.text().strip()
         role_filter = self.role_filter.currentText()
         
         if search_query:
