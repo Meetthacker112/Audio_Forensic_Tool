@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import (
     QTabWidget, QScrollArea, QSplitter, QGroupBox, QListWidget,
     QComboBox, QSpinBox, QCheckBox, QSlider, QFrame, QMessageBox,
     QStatusBar, QMenuBar, QToolBar, QApplication, QDialog, QDialogButtonBox,
-    QListWidgetItem
+    QListWidgetItem, QLineEdit
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer, QSize, QMutex, QWaitCondition
 from PyQt6.QtGui import QFont, QPixmap, QIcon, QAction, QPalette, QColor, QTextCharFormat, QTextCursor
@@ -22,9 +22,373 @@ from speech_analysis import EnhancedSpeechAnalyzer
 from keyword_detection import EnhancedKeywordDetector
 from forensic_ai import ForensicAI
 from report_generator import ReportGenerator
+from person_manager import PersonManager
 import logging
 import json
 from datetime import datetime
+
+
+class PersonDialog(QDialog):
+    """Dialog for adding/editing a person"""
+    
+    def __init__(self, parent=None, person: dict = None):
+        super().__init__(parent)
+        self.person = person
+        self.setWindowTitle("Edit Person" if person else "Add Person")
+        self.setMinimumSize(400, 350)
+        self.setup_ui()
+        
+        if person:
+            self.load_person_data()
+    
+    def setup_ui(self):
+        layout = QVBoxLayout(self)
+        
+        # Name
+        name_layout = QHBoxLayout()
+        name_layout.addWidget(QLabel("Name:"))
+        self.name_edit = QLineEdit()
+        self.name_edit.setPlaceholderText("Enter person's name")
+        name_layout.addWidget(self.name_edit)
+        layout.addLayout(name_layout)
+        
+        # Role
+        role_layout = QHBoxLayout()
+        role_layout.addWidget(QLabel("Role:"))
+        self.role_combo = QComboBox()
+        self.role_combo.addItems([
+            "Suspect", "Witness", "Victim", 
+            "Person of Interest", "Informant", "Other"
+        ])
+        role_layout.addWidget(self.role_combo)
+        layout.addLayout(role_layout)
+        
+        # Description
+        layout.addWidget(QLabel("Description:"))
+        self.description_edit = QTextEdit()
+        self.description_edit.setMaximumHeight(60)
+        self.description_edit.setPlaceholderText("Physical description or identifying details")
+        layout.addWidget(self.description_edit)
+        
+        # Contact
+        contact_layout = QHBoxLayout()
+        contact_layout.addWidget(QLabel("Contact:"))
+        self.contact_edit = QLineEdit()
+        self.contact_edit.setPlaceholderText("Contact information (optional)")
+        contact_layout.addWidget(self.contact_edit)
+        layout.addLayout(contact_layout)
+        
+        # Notes
+        layout.addWidget(QLabel("Notes:"))
+        self.notes_edit = QTextEdit()
+        self.notes_edit.setMaximumHeight(80)
+        self.notes_edit.setPlaceholderText("Additional notes about this person")
+        layout.addWidget(self.notes_edit)
+        
+        # Buttons
+        buttons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Save | 
+            QDialogButtonBox.StandardButton.Cancel
+        )
+        buttons.accepted.connect(self.accept)
+        buttons.rejected.connect(self.reject)
+        layout.addWidget(buttons)
+    
+    def load_person_data(self):
+        """Load existing person data into form fields"""
+        if self.person:
+            self.name_edit.setText(self.person.get('name', ''))
+            
+            role = self.person.get('role', 'Other')
+            index = self.role_combo.findText(role)
+            if index >= 0:
+                self.role_combo.setCurrentIndex(index)
+            
+            self.description_edit.setPlainText(self.person.get('description', ''))
+            self.contact_edit.setText(self.person.get('contact', ''))
+            self.notes_edit.setPlainText(self.person.get('notes', ''))
+    
+    def get_person_data(self) -> dict:
+        """Get the person data from form fields"""
+        return {
+            'name': self.name_edit.text().strip(),
+            'role': self.role_combo.currentText(),
+            'description': self.description_edit.toPlainText().strip(),
+            'contact': self.contact_edit.text().strip(),
+            'notes': self.notes_edit.toPlainText().strip()
+        }
+
+
+class PersonManagementDialog(QDialog):
+    """Dialog for managing persons of interest"""
+    
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.logger = logging.getLogger(__name__)
+        self.person_manager = PersonManager()
+        self.setWindowTitle("Person Management")
+        self.setMinimumSize(700, 500)
+        self.setup_ui()
+        self.refresh_person_list()
+    
+    def setup_ui(self):
+        layout = QVBoxLayout(self)
+        
+        # Header with search
+        header_layout = QHBoxLayout()
+        
+        self.search_edit = QLineEdit()
+        self.search_edit.setPlaceholderText("Search persons...")
+        self.search_edit.textChanged.connect(self.on_search_changed)
+        header_layout.addWidget(self.search_edit, 3)
+        
+        self.role_filter = QComboBox()
+        self.role_filter.addItems([
+            "All Roles", "Suspect", "Witness", "Victim",
+            "Person of Interest", "Informant", "Other"
+        ])
+        self.role_filter.currentTextChanged.connect(self.on_filter_changed)
+        header_layout.addWidget(self.role_filter, 1)
+        
+        layout.addLayout(header_layout)
+        
+        # Person list
+        self.person_list = QListWidget()
+        self.person_list.itemDoubleClicked.connect(self.on_person_double_clicked)
+        self.person_list.itemSelectionChanged.connect(self.on_selection_changed)
+        layout.addWidget(self.person_list)
+        
+        # Details panel
+        details_group = QGroupBox("Person Details")
+        details_layout = QVBoxLayout(details_group)
+        
+        self.details_text = QTextEdit()
+        self.details_text.setReadOnly(True)
+        self.details_text.setMaximumHeight(120)
+        details_layout.addWidget(self.details_text)
+        
+        layout.addWidget(details_group)
+        
+        # Action buttons
+        button_layout = QHBoxLayout()
+        
+        self.add_btn = QPushButton("➕ Add Person")
+        self.add_btn.clicked.connect(self.add_person)
+        button_layout.addWidget(self.add_btn)
+        
+        self.edit_btn = QPushButton("✏️ Edit")
+        self.edit_btn.clicked.connect(self.edit_person)
+        self.edit_btn.setEnabled(False)
+        button_layout.addWidget(self.edit_btn)
+        
+        self.delete_btn = QPushButton("🗑️ Delete")
+        self.delete_btn.clicked.connect(self.delete_person)
+        self.delete_btn.setEnabled(False)
+        button_layout.addWidget(self.delete_btn)
+        
+        button_layout.addStretch()
+        
+        self.export_btn = QPushButton("📤 Export")
+        self.export_btn.clicked.connect(self.export_persons)
+        button_layout.addWidget(self.export_btn)
+        
+        self.import_btn = QPushButton("📥 Import")
+        self.import_btn.clicked.connect(self.import_persons)
+        button_layout.addWidget(self.import_btn)
+        
+        layout.addLayout(button_layout)
+        
+        # Statistics
+        self.stats_label = QLabel()
+        layout.addWidget(self.stats_label)
+        
+        # Close button
+        close_btn = QPushButton("Close")
+        close_btn.clicked.connect(self.accept)
+        layout.addWidget(close_btn)
+    
+    def refresh_person_list(self):
+        """Refresh the person list display"""
+        self.person_list.clear()
+        
+        search_query = self.search_edit.text().strip()
+        role_filter = self.role_filter.currentText()
+        
+        if search_query:
+            persons = self.person_manager.search_persons(search_query)
+        else:
+            persons = self.person_manager.get_all_persons()
+        
+        if role_filter != "All Roles":
+            persons = [p for p in persons if p.get('role') == role_filter]
+        
+        for person in persons:
+            role_icons = {
+                'Suspect': '🔴',
+                'Witness': '🔵', 
+                'Victim': '🟡',
+                'Person of Interest': '🟠',
+                'Informant': '🟢',
+                'Other': '⚪'
+            }
+            icon = role_icons.get(person.get('role', 'Other'), '⚪')
+            
+            display_text = f"{icon} {person['name']} - {person.get('role', 'Unknown')}"
+            
+            item = QListWidgetItem(display_text)
+            item.setData(Qt.ItemDataRole.UserRole, person['id'])
+            self.person_list.addItem(item)
+        
+        # Update statistics
+        stats = self.person_manager.get_role_statistics()
+        total = self.person_manager.get_person_count()
+        stats_text = f"Total: {total} | " + " | ".join([f"{k}: {v}" for k, v in stats.items()])
+        self.stats_label.setText(stats_text)
+    
+    def on_search_changed(self):
+        """Handle search text changes"""
+        self.refresh_person_list()
+    
+    def on_filter_changed(self):
+        """Handle role filter changes"""
+        self.refresh_person_list()
+    
+    def on_selection_changed(self):
+        """Handle person selection changes"""
+        has_selection = len(self.person_list.selectedItems()) > 0
+        self.edit_btn.setEnabled(has_selection)
+        self.delete_btn.setEnabled(has_selection)
+        
+        if has_selection:
+            item = self.person_list.selectedItems()[0]
+            person_id = item.data(Qt.ItemDataRole.UserRole)
+            person = self.person_manager.get_person(person_id)
+            
+            if person:
+                details = f"Name: {person.get('name', 'N/A')}\n"
+                details += f"Role: {person.get('role', 'N/A')}\n"
+                details += f"Description: {person.get('description', 'N/A')}\n"
+                details += f"Contact: {person.get('contact', 'N/A')}\n"
+                details += f"Notes: {person.get('notes', 'N/A')}\n"
+                details += f"Created: {person.get('created_at', 'N/A')}"
+                self.details_text.setPlainText(details)
+        else:
+            self.details_text.clear()
+    
+    def on_person_double_clicked(self, item):
+        """Handle double-click on person item"""
+        self.edit_person()
+    
+    def add_person(self):
+        """Open dialog to add a new person"""
+        dialog = PersonDialog(self)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            data = dialog.get_person_data()
+            
+            if not data['name']:
+                QMessageBox.warning(self, "Invalid Input", "Name is required.")
+                return
+            
+            person = self.person_manager.add_person(
+                name=data['name'],
+                role=data['role'],
+                description=data['description'],
+                contact=data['contact'],
+                notes=data['notes']
+            )
+            
+            if person:
+                self.refresh_person_list()
+                QMessageBox.information(self, "Success", f"Person '{data['name']}' added successfully.")
+            else:
+                QMessageBox.critical(self, "Error", "Failed to add person.")
+    
+    def edit_person(self):
+        """Open dialog to edit selected person"""
+        if not self.person_list.selectedItems():
+            return
+        
+        item = self.person_list.selectedItems()[0]
+        person_id = item.data(Qt.ItemDataRole.UserRole)
+        person = self.person_manager.get_person(person_id)
+        
+        if not person:
+            QMessageBox.warning(self, "Error", "Person not found.")
+            return
+        
+        dialog = PersonDialog(self, person)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            data = dialog.get_person_data()
+            
+            if not data['name']:
+                QMessageBox.warning(self, "Invalid Input", "Name is required.")
+                return
+            
+            updated = self.person_manager.update_person(person_id, **data)
+            
+            if updated:
+                self.refresh_person_list()
+                QMessageBox.information(self, "Success", "Person updated successfully.")
+            else:
+                QMessageBox.critical(self, "Error", "Failed to update person.")
+    
+    def delete_person(self):
+        """Delete the selected person"""
+        if not self.person_list.selectedItems():
+            return
+        
+        item = self.person_list.selectedItems()[0]
+        person_id = item.data(Qt.ItemDataRole.UserRole)
+        person = self.person_manager.get_person(person_id)
+        
+        if not person:
+            return
+        
+        reply = QMessageBox.question(
+            self, "Confirm Delete",
+            f"Are you sure you want to delete '{person['name']}'?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+        
+        if reply == QMessageBox.StandardButton.Yes:
+            if self.person_manager.delete_person(person_id):
+                self.refresh_person_list()
+                self.details_text.clear()
+                QMessageBox.information(self, "Success", "Person deleted successfully.")
+            else:
+                QMessageBox.critical(self, "Error", "Failed to delete person.")
+    
+    def export_persons(self):
+        """Export persons to a JSON file"""
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, "Export Persons", "", "JSON Files (*.json)"
+        )
+        
+        if file_path:
+            if not file_path.endswith('.json'):
+                file_path += '.json'
+            
+            if self.person_manager.export_persons(file_path):
+                QMessageBox.information(
+                    self, "Success", 
+                    f"Exported {self.person_manager.get_person_count()} persons to {file_path}"
+                )
+            else:
+                QMessageBox.critical(self, "Error", "Failed to export persons.")
+    
+    def import_persons(self):
+        """Import persons from a JSON file"""
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, "Import Persons", "", "JSON Files (*.json)"
+        )
+        
+        if file_path:
+            count = self.person_manager.import_persons(file_path, merge=True)
+            self.refresh_person_list()
+            QMessageBox.information(
+                self, "Success", 
+                f"Imported {count} new persons from {file_path}"
+            )
 
 
 class LanguageSelectionDialog(QDialog):
@@ -751,6 +1115,13 @@ class MainWindow(QMainWindow):
         # Tools menu
         tools_menu = menubar.addMenu("Tools")
         
+        person_management_action = QAction("Person Management", self)
+        person_management_action.setShortcut("Ctrl+P")
+        person_management_action.triggered.connect(self.show_person_management)
+        tools_menu.addAction(person_management_action)
+        
+        tools_menu.addSeparator()
+        
         settings_action = QAction("Settings", self)
         tools_menu.addAction(settings_action)
         
@@ -776,6 +1147,12 @@ class MainWindow(QMainWindow):
         report_action = QAction("Report", self)
         report_action.triggered.connect(self.generate_report)
         toolbar.addAction(report_action)
+        
+        toolbar.addSeparator()
+        
+        persons_action = QAction("Persons", self)
+        persons_action.triggered.connect(self.show_person_management)
+        toolbar.addAction(persons_action)
     
     def setup_connections(self):
         """Setup signal connections"""
@@ -1380,6 +1757,15 @@ class MainWindow(QMainWindow):
         except Exception as e:
             self.logger.error(f"Error generating report: {e}")
             QMessageBox.critical(self, "Report Error", f"Failed to generate report: {e}")
+    
+    def show_person_management(self):
+        """Show the Person Management dialog"""
+        try:
+            dialog = PersonManagementDialog(self)
+            dialog.exec()
+        except Exception as e:
+            self.logger.error(f"Error opening Person Management: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to open Person Management: {e}")
     
     def show_about(self):
         """Show about dialog"""
