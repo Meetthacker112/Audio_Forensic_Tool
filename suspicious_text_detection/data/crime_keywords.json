@@ -1,0 +1,47 @@
+{
+  "english": {
+    "violence": [
+      "murder", "kill", "killing", "homicide", "shoot", "shooting", "stab", "stabbing",
+      "assault", "attack", "violence", "violent", "beat", "beating", "torture"
+    ],
+    "weapons": [
+      "weapon", "weapons", "gun", "pistol", "rifle", "knife", "blade", "sword", "bomb",
+      "explosive", "ammunition"
+    ],
+    "theft": [
+      "steal", "stolen", "theft", "rob", "robbery", "burglar", "burglary", "heist",
+      "pickpocket", "shoplifting", "embezzle", "embezzlement"
+    ],
+    "fraud": [
+      "fraud", "scam", "scamming", "cheat", "cheating", "swindle", "money laundering",
+      "launder", "forgery", "counterfeit"
+    ],
+    "smuggling": [
+      "smuggle", "smuggling", "trafficking", "contraband"
+    ],
+    "threats": [
+      "threat", "threaten", "intimidate", "blackmail", "extort", "extortion"
+    ],
+    "general": [
+      "crime", "criminal", "illegal", "illicit"
+    ]
+  },
+  "hindi": {
+    "violence": ["हत्या", "मारना", "गोली", "छुरा", "हमला", "मारपीट", "हिंसा"],
+    "weapons": ["हथियार", "बंदूक", "पिस्तौल", "राइफल", "छुरी", "बम", "विस्फोटक"],
+    "theft": ["चोरी", "डकैती", "लूट", "लुटेरा", "घरफोड़"],
+    "fraud": ["धोखाधड़ी", "ठगी", "जालसाजी"],
+    "smuggling": ["तस्करी", "तस्कर"],
+    "threats": ["धमकी", "धमकाना", "ब्लैकमेल", "जबरन वसूली"],
+    "general": ["अपराध", "गैरकानूनी"]
+  },
+  "gujarati": {
+    "violence": ["હત્યા", "મારવું", "ગોળી", "છરી", "હુમલો", "મારામારી", "હિંસા"],
+    "weapons": ["હથિયાર", "બંદૂક", "પિસ્તાન", "રાઈફલ", "છરી", "બોમ્બ", "વિસ્ફોટક"],
+    "theft": ["ચોરી", "લૂટ", "ડકૈતી", "ચોર"],
+    "fraud": ["છેતરપિંડી", "ઠગાઈ"],
+    "smuggling": ["દાણચોરી", "તસ્કરી"],
+    "threats": ["ધમકી", "ધમકાવવું"],
+    "general": ["ગુનો", "ગેરકાયદેસર"]
+  }
+}
